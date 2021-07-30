@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TopicController {
 
   @Autowired
-  private TopicService topicService;
+  private TopicServiceImpl topicService;
 
   @RequestMapping("")
   public List<Topic> getAllTopic() {
@@ -22,12 +22,11 @@ public class TopicController {
   }
 
   @RequestMapping("/{id}")
-  public Topic getTopic(@PathVariable Long id) {
-
+  public Topic topicgetTopic(@PathVariable Long id) {
     return topicService.getTopicById(id);
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/")
+  @RequestMapping(method = RequestMethod.POST, value = "")
   public Topic addNewTopic(@RequestBody Topic topic) {
     return topicService.addTopic(topic);
   }
