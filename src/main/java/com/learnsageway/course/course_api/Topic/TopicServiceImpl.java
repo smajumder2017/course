@@ -2,6 +2,7 @@ package com.learnsageway.course.course_api.Topic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,11 @@ public class TopicServiceImpl implements TopicService {
 
   @Override
   public Topic getTopicById(Long id) {
-    return topicDao.findById(id).get();
+    Optional<Topic> topic = topicDao.findById(id);
+    if (topic.isPresent()) {
+      return topic.get();
+    }
+    throw new RuntimeException("Topic Not Found");
   }
 
   @Override
@@ -34,18 +39,17 @@ public class TopicServiceImpl implements TopicService {
   @Override
   public Topic updateTopicById(Long id, Topic topic) {
 
-    for (int i = 0; i < topics.size(); i++) {
-      Topic t = topics.get(i);
-      if (t.getId().equals(id)) {
-        topics.set(i, topic);
-      }
-    }
+    Topic t = this.getTopicById(id);
+    t.setId(id);
+    t.setName(topic.getName());
+    t.setDescription(t.getDescription());
 
-    return topic;
+    Topic newTopic = topicDao.save(t);
+    return newTopic;
   }
 
   public void removeTopicById(Long id) {
-    topics.removeIf(t -> t.getId().equals(id));
+    topicDao.deleteById(id);
   }
 
 }
