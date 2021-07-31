@@ -7,7 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class TopicServiceImpl implements TopicService {
 
   @Autowired
@@ -18,6 +21,7 @@ public class TopicServiceImpl implements TopicService {
   @Override
   public List<Topic> getAllTopics() {
     topicDao.findAll().forEach(topics::add);
+    log.info("Working");
     return topics;
   }
 
